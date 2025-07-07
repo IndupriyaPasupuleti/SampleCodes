@@ -1,0 +1,30 @@
+def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def is_valid_bst(root: TreeNode) -> bool:
+    """
+    Checks if a given binary tree is a valid Binary Search Tree.
+
+    Args:
+        root: The root node of the binary tree.
+
+    Returns:
+        True if the binary tree is a valid BST, False otherwise.
+    """
+    def validate(node, min_val, max_val):
+        if not node:
+            return True
+
+        if not (min_val < node.val < max_val):
+            return False
+
+        # Recursively check the left and right subtrees
+        # For the left subtree, the current node's value becomes the new max_val
+        # For the right subtree, the current node's value becomes the new min_val
+        return (validate(node.left, min_val, node.val) and
+                validate(node.right, node.val, max_val))
+
+    # Initialize with negative and positive infinity to represent no bounds initially
+    return validate(root, float('-inf'), float('inf'))
