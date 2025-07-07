@@ -1,0 +1,42 @@
+def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+def find_second_largest_in_bst(root):
+    """
+    Finds the second largest element in a Binary Search Tree.
+
+    Args:
+        root: The root node of the BST.
+
+    Returns:
+        The data of the second largest element, or None if the tree has fewer than two nodes.
+    """
+    if not root or (not root.left and not root.right):
+        return None  # Tree has 0 or 1 node, no second largest
+
+    # Use a list to store the count of visited nodes and the result
+    count = [0]
+    result = [None]
+
+    def reverse_inorder_traversal(node):
+        nonlocal count, result
+        if not node or count[0] >= 2:
+            return
+
+        # Traverse right subtree first (reverse in-order)
+        reverse_inorder_traversal(node.right)
+
+        # Increment count after visiting the right subtree (or if it's a leaf)
+        if count[0] < 2:
+            count[0] += 1
+            if count[0] == 2:
+                result[0] = node.data
+                return
+
+        # Traverse left subtree
+        reverse_inorder_traversal(node.left)
+
+    reverse_inorder_traversal(root)
+    return result[0]
